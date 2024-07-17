@@ -33,6 +33,7 @@ android {
         implementation "io.noties.markwon:linkify:$markwonVersion"
         implementation "io.noties.markwon:recycler:$markwonVersion"
 
+
         implementation project(":terminal-view")
         implementation project(":termux-shared")
     }

@@ -233,5 +233,18 @@
 
     <!-- Donate Preference -->
     <string name="donate_preference_title">Donate</string>
+    <string name="run_termux">Run Server</string>
+    <string name="iptv_player">IPTV Player</string>
+    <string name="update_jiotv_go">Update JioTV Go</string>
+    <string name="log_in_otp">Log In - OTP</string>
+    <string name="open_web_page">Open Web page</string>
+
+
+
+
+    <string name="dialog_start_text">Do you want to Interupt?</string>
+    <string name="interupt">stop</string>
+    <string name="dialog_reinstall_text">Reinstall Server?</string>
+
 
 </resources>

@@ -53,6 +53,53 @@
         tools:targetApi="m">
 
         <activity
+            android:name=".sky.MainActivity"
+            android:label="App Second"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_del_2"
+            android:roundIcon="@mipmap/ic_launcher_del_2_round">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <activity android:name=".sky.IptvSelectorActivity"
+            android:label="IPTV App Selector">
+        </activity>
+
+        <activity android:name=".sky.MainActivity2"
+            android:label="IPTV App Selector">
+        </activity>
+
+        <activity android:name=".sky.LoginOTP"
+            android:label="IPTV App Selector">
+        </activity>
+
+
+        <activity
+            android:name=".lake.MainActivity"
+            android:label="IPTV Opener"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_del_3"
+            android:roundIcon="@mipmap/ic_launcher_del_3_round">
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+        </activity>
+
+
+        <activity
             android:name=".app.TermuxActivity"
             android:exported="true"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
@@ -61,21 +108,21 @@
             android:resizeableActivity="true"
             android:theme="@style/Theme.TermuxActivity.DayNight.NoActionBar"
             tools:targetApi="n">
-            <intent-filter>
+            <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-            </intent-filter>
 
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
+
+
+
+
 
         <activity-alias
             android:name=".HomeActivity"

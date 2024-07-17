@@ -553,7 +553,7 @@ Java_com_termux_shared_net_socket_local_LocalSocketManager_getPeerCredNative(JNI
         return getJniResult(env, logTitle, -1, errno, "getPeerCredNative(): Failed to get peer credentials for fd " + to_string(fd));
     }
 
-    // Fill "com.termux.shared.net.socket.local.PeerCred" object.
+    // Fill "com.local.socket.net.shared.custtermux.PeerCred" object.
     // The pid, uid and gid will always be set based on ucred.
     // The pname and cmdline will only be set if current process has access to "/proc/[pid]/cmdline"
     // of peer process. Processes of other users/apps are not normally accessible.

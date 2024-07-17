@@ -16,6 +16,8 @@ android {
         implementation "io.noties.markwon:recycler:$markwonVersion"
         implementation "org.lsposed.hiddenapibypass:hiddenapibypass:2.0"
 
+
+
         // Do not increment version higher than 1.0.0-alpha09 since it will break ViewUtils and needs to be looked into
         // noinspection GradleDependency
         implementation "androidx.window:window:1.0.0-alpha09"
