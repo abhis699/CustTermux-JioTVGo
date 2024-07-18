@@ -3,13 +3,13 @@ package com.termux.sky;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -19,137 +19,109 @@ import android.widget.Toast;
 import com.termux.R;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
+public class IptvSelectorActivity extends ListActivity {
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.fragment.app.Fragment;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-public class InstalledAppsFragment extends Fragment {
-
-    private ListView appListView;
-    private PackageManager packageManager;
-    private SharedPreferences sharedPreferences;
+    private List<AppInfo> installedApps;
+    private MyAdapter adapter;
+    private SharedPrefManager sharedPrefManager;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_installed_apps, container, false);
-        appListView = view.findViewById(R.id.appListView);
-        packageManager = requireContext().getPackageManager();
-        sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        return view;
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_iptv_selector);
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        List<AppInfo> installedApps = getInstalledApps();
-        AppAdapter adapter = new AppAdapter(requireContext(), installedApps);
-        appListView.setAdapter(adapter);
+        sharedPrefManager = new SharedPrefManager(getApplicationContext());
 
-        appListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        installedApps = getInstalledApps();
+
+        adapter = new MyAdapter(this, R.layout.list_item, installedApps);
+        setListAdapter(adapter);
+
+        ListView listView = getListView();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AppInfo selectedApp = installedApps.get(position);
-                String pkgName = selectedApp.packageName;
-
-                // Save selected app package name
-                saveSelectedAppToFile(pkgName);
-
-                // Show a toast notification
-                Toast.makeText(requireContext(), "App saved: " + selectedApp.appName, Toast.LENGTH_SHORT).show();
-
-                // Launch MainActivity
-                launchMainActivity();
-
-                // Close the entire app
-                requireActivity().finish();
+                String selectedAppPackage = installedApps.get(position).getPackageName();
+                saveSelectedAppToFile(selectedAppPackage);
+                Toast.makeText(getApplicationContext(), "Selected: " + selectedAppPackage, Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
 
-    private void saveSelectedAppToFile(String selectedAppPackage) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("savedAPP", selectedAppPackage);
-        editor.apply();
-    }
-
     private List<AppInfo> getInstalledApps() {
         List<AppInfo> apps = new ArrayList<>();
-        List<android.content.pm.PackageInfo> packageList = packageManager.getInstalledPackages(PackageManager.GET_META_DATA);
-        for (android.content.pm.PackageInfo packageInfo : packageList) {
-            String appName = packageManager.getApplicationLabel(packageInfo.applicationInfo).toString();
-            Drawable appIcon = packageManager.getApplicationIcon(packageInfo.applicationInfo);
-            String packageName = packageInfo.packageName;
-            apps.add(new AppInfo(appName, appIcon, packageName));
+        PackageManager packageManager = getPackageManager();
+        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        List<ResolveInfo> appList = packageManager.queryIntentActivities(mainIntent, 0);
+
+        for (ResolveInfo info : appList) {
+            String appName = info.activityInfo.loadLabel(packageManager).toString();
+            String packageName = info.activityInfo.packageName;
+            Drawable icon = info.activityInfo.loadIcon(packageManager);
+            apps.add(new AppInfo(appName, packageName, icon));
         }
-        Collections.sort(apps, (app1, app2) -> app1.appName.compareToIgnoreCase(app2.appName));
+
         return apps;
     }
 
-    private void launchMainActivity() {
-        Intent intent = new Intent(requireContext(), MainActivity.class);
-        startActivity(intent);
+    private void saveSelectedAppToFile(String selectedAppPackage) {
+        // Same logic as before...
     }
 
-    private static class AppAdapter extends ArrayAdapter<AppInfo> {
+    // Custom adapter class to hold app info and handle icon display
+    private class MyAdapter extends ArrayAdapter<AppInfo> {
 
-        private Context context;
+        private final int layoutResource;
 
-        AppAdapter(Context context, List<AppInfo> apps) {
-            super(context, R.layout.item_installed_app, apps);
-            this.context = context;
+        public MyAdapter(Context context, int resource, List<AppInfo> apps) {
+            super(context, resource, apps);
+            this.layoutResource = resource;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = convertView;
             if (view == null) {
-                view = LayoutInflater.from(context).inflate(R.layout.item_installed_app, parent, false);
+                view = getLayoutInflater().inflate(layoutResource, parent, false);
             }
+
+            ImageView appIcon = (ImageView) view.findViewById(R.id.app_icon);
+            TextView appName = (TextView) view.findViewById(R.id.app_name);
 
             AppInfo appInfo = getItem(position);
-
-            TextView appNameTextView = view.findViewById(R.id.appNameTextView);
-            ImageView appIconImageView = view.findViewById(R.id.appIconImageView);
-
-            if (appInfo != null) {
-                appNameTextView.setText(appInfo.appName);
-                appIconImageView.setImageDrawable(appInfo.appIcon);
-            }
+            appIcon.setImageDrawable(appInfo.getIcon());
+            appName.setText(appInfo.getAppName());
 
             return view;
         }
     }
 
+    // Class to hold app information
     private static class AppInfo {
-        String appName;
-        Drawable appIcon;
-        String packageName;
+        private final String appName;
+        private final String packageName;
+        private final Drawable icon;
 
-        AppInfo(String appName, Drawable appIcon, String packageName) {
+        public AppInfo(String appName, String packageName, Drawable icon) {
             this.appName = appName;
-            this.appIcon = appIcon;
             this.packageName = packageName;
+            this.icon = icon;
+        }
+
+        public String getAppName() {
+            return appName;
+        }
+
+        public String getPackageName() {
+            return packageName;
+        }
+
+        public Drawable getIcon() {
+            return icon;
         }
     }
 }

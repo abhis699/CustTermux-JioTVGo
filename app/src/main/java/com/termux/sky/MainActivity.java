@@ -1,5 +1,6 @@
 package com.termux.sky;
 
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Show the StartGameDialogFragment when the app opens
         FragmentManager fragmentManager = getSupportFragmentManager();
         StartDialogFragment dialog = new StartDialogFragment();
-        //dialog.show(fragmentManager, "START_DIALOG"); - main dialog starter
+        //dialog.show(fragmentManager, "START_DIALOG");
     }
 
     @Override
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button4:
                 //Change IPTV
+                iptv();
                 break;
             case R.id.button5:
                 // RE-INSTALL
@@ -104,6 +106,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Intent IPTVIntent = new Intent();
                 //IPTVIntent.setClassName("se.hedekonsult.sparkle", "se.hedekonsult.sparkle.MainActivity");
                 //startActivity(IPTVIntent);
+
+                //finish();
+            }
+        };
+        handler.postDelayed(runnable, 200);
+    }
+
+    private void iptv() {
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                Intent IPTVIntent = new Intent();
+                IPTVIntent.setClassName("com.termux", "com.termux.sky.IptvSelectorActivity");
+                startActivity(IPTVIntent);
 
                 //finish();
             }
@@ -166,6 +183,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void reInstall_confirm() {
         // Show the StartGameDialogFragment when the app opens
 
+        Intent intent = new Intent();
+        intent.setClassName("com.termux", "com.termux.app.RunCommandService");
+        intent.setAction("com.termux.RUN_COMMAND");
+        intent.putExtra("com.termux.RUN_COMMAND_PATH", "/data/data/com.termux/files/usr/bin/top");
+        intent.putExtra("com.termux.RUN_COMMAND_ARGUMENTS", new String[]{"-n", "5"});
+        intent.putExtra("com.termux.RUN_COMMAND_WORKDIR", "/data/data/com.termux/files/home");
+        intent.putExtra("com.termux.RUN_COMMAND_BACKGROUND", false);
+        intent.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION", "0");
+
+// Create the pending intent
+        Intent resultIntent = new Intent("com.yourapp.RUN_COMMAND_RESULT");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.putExtra("com.termux.service.EXTRA_PENDING_INTENT", pendingIntent);
+
+        startService(intent);
+
+
     }
 
     private void restart_app() {
@@ -205,6 +239,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void TheShowRunner() {
 
+        Intent intentC = new Intent();
+        intentC.setClassName("com.termux", "com.termux.app.RunCommandService");
+        intentC.setAction("com.termux.RUN_COMMAND");
+        intentC.putExtra("com.termux.RUN_COMMAND_PATH", "/data/data/com.termux/files/home/login.sh");
+        intentC.putExtra("com.termux.RUN_COMMAND_ARGUMENTS", new String[]{"verifylogin"});
+        intentC.putExtra("com.termux.RUN_COMMAND_WORKDIR", "/data/data/com.termux/files/home");
+        intentC.putExtra("com.termux.RUN_COMMAND_BACKGROUND", false);
+        intentC.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION", "0");
+        startService(intentC);
+
+        stopper();
+
+        Intent intentC2 = new Intent();
+        intentC2.setClassName("com.termux", "com.termux.app.RunCommandService");
+        intentC2.setAction("com.termux.RUN_COMMAND");
+        intentC2.putExtra("com.termux.RUN_COMMAND_PATH", "/data/data/com.termux/files/home/login.sh");
+        intentC2.putExtra("com.termux.RUN_COMMAND_ARGUMENTS", new String[]{"verifyiptv"});
+        intentC2.putExtra("com.termux.RUN_COMMAND_WORKDIR", "/data/data/com.termux/files/home");
+        intentC2.putExtra("com.termux.RUN_COMMAND_BACKGROUND", false);
+        intentC2.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION", "0");
+        startService(intentC2);
+
+        stopper();
 
 
         // Implement the MAXI function here
@@ -216,28 +273,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         termuxServiceIntent.setAction("com.termux.service_stop");
         startService(termuxServiceIntent);
 
-        Intent intentX = new Intent();
-        intentX.setClassName("com.termux", "com.termux.app.RunCommandService");
-        intentX.setAction("com.termux.RUN_COMMAND");
-        intentX.putExtra("com.termux.RUN_COMMAND_PATH", "/data/data/com.termux/files/usr/bin/pkill");
-        intentX.putExtra("com.termux.RUN_COMMAND_ARGUMENTS", new String[]{"-f", "$HOME/.jiotv_go/bin/jiotv_go"});
-        intentX.putExtra("com.termux.RUN_COMMAND_WORKDIR", "/data/data/com.termux/files/home");
-        intentX.putExtra("com.termux.RUN_COMMAND_BACKGROUND", false);
-        intentX.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION", "0");
-        //startService(intentX);/data/data/com.termux/files/homeE/.jiotv_go/bin/jiotv_go
+
 
         Toast.makeText(this, "RUN MAXi - mid", Toast.LENGTH_SHORT).show();
 
 
-        Intent intentC = new Intent();
-        intentC.setClassName("com.termux", "com.termux.app.RunCommandService");
-        intentC.setAction("com.termux.RUN_COMMAND");
-        intentC.putExtra("com.termux.RUN_COMMAND_PATH", "/data/data/com.termux/files/home/.jiotv_go/bin/jiotv_go");
-        intentC.putExtra("com.termux.RUN_COMMAND_ARGUMENTS", new String[]{"run"});
-        intentC.putExtra("com.termux.RUN_COMMAND_WORKDIR", "/data/data/com.termux/files/home");
-        intentC.putExtra("com.termux.RUN_COMMAND_BACKGROUND", false);
-        intentC.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION", "0");
-        //startService(intentC);
 
         // Start the Termux service
         Intent serviceIntent = new Intent();
@@ -246,18 +286,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startService(serviceIntent);
 
 
+
+
+
+
         handler = new Handler();
         runnable = new Runnable() {
             @Override
             public void run() {
-                Intent IPTVIntent = new Intent();
-                IPTVIntent.setClassName("se.hedekonsult.sparkle", "se.hedekonsult.sparkle.MainActivity");
-                startActivity(IPTVIntent);
+               // //Intent IPTVIntent = new Intent();
+                //IPTVIntent.setClassName("se.hedekonsult.sparkle", "se.hedekonsult.sparkle.MainActivity");
+                //startActivity(IPTVIntent);
+                Intent intentX = new Intent();
+                intentX.setClassName("com.termux", "com.termux.app.RunCommandService");
+                intentX.setAction("com.termux.RUN_COMMAND");
+                intentX.putExtra("com.termux.RUN_COMMAND_PATH", "/data/data/com.termux/files/home/login.sh");
+                intentX.putExtra("com.termux.RUN_COMMAND_ARGUMENTS", new String[]{"runiptv"});
+                intentX.putExtra("com.termux.RUN_COMMAND_WORKDIR", "/data/data/com.termux/files/home");
+                intentX.putExtra("com.termux.RUN_COMMAND_BACKGROUND", false);
+                intentX.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION", "0");
+                startService(intentX);
 
                 //finish();
             }
         };
-        handler.postDelayed(runnable, 200);
+        handler.postDelayed(runnable, 2000);
 
 
 

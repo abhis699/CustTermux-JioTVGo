@@ -2,13 +2,17 @@ package com.termux.sky;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.termux.R;
+import com.termux.app.TermuxActivity;
 
 public class StartDialogFragment extends DialogFragment {
     private Handler handler;
@@ -34,6 +38,8 @@ public class StartDialogFragment extends DialogFragment {
             @Override
             public void run() {
                 //((MainActivity) getActivity()).TheShowRunner();
+                work ();
+                ((TermuxActivity) getActivity()).work2();
                 dismiss();
             }
         };
@@ -41,4 +47,9 @@ public class StartDialogFragment extends DialogFragment {
 
         return dialog;
     }
+    private void work() {
+        Log.d("E", "work: DONE 1 ");
+
+    }
+
 }

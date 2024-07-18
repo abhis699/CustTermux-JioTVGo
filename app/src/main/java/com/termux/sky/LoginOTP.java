@@ -4,11 +4,13 @@ package com.termux.sky;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
 import android.widget.EditText;
 import android.widget.Toast;
+
 
 public class LoginOTP extends Activity {
 
@@ -99,19 +101,41 @@ public class LoginOTP extends Activity {
     // Placeholder function for sending OTP (replace with actual implementation)
     private void sendOTP(String phoneNumber) {
         // Implement your logic to send OTP to the phone number (e.g., using SMS API)
+
+        Intent intentC = new Intent();
+        intentC.setClassName("com.termux", "com.termux.app.RunCommandService");
+        intentC.setAction("com.termux.RUN_COMMAND");
+        intentC.putExtra("com.termux.RUN_COMMAND_PATH", "/data/data/com.termux/files/home/login.sh");
+        intentC.putExtra("com.termux.RUN_COMMAND_ARGUMENTS", new String[]{"sendotp",phoneNumber});
+        intentC.putExtra("com.termux.RUN_COMMAND_WORKDIR", "/data/data/com.termux/files/home");
+        intentC.putExtra("com.termux.RUN_COMMAND_BACKGROUND", false);
+        intentC.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION", "0");
+        startService(intentC);
+
+
+
+
         Toast.makeText(this, "Sending OTP to " + phoneNumber + " (placeholder)", Toast.LENGTH_SHORT).show();
     }
 
     // Placeholder function for verifying OTP (replace with actual implementation)
     private boolean verifyOTP(String phoneNumber, String enteredOTP) {
-        // Implement your logic to verify the entered OTP against the actual OTP received by the user (e.g., from server)
-        // This function should return true if the OTP is valid, false otherwise.
+        Intent intentC = new Intent();
+        intentC.setClassName("com.termux", "com.termux.app.RunCommandService");
+        intentC.setAction("com.termux.RUN_COMMAND");
+        intentC.putExtra("com.termux.RUN_COMMAND_PATH", "/data/data/com.termux/files/home/login.sh");
+        intentC.putExtra("com.termux.RUN_COMMAND_ARGUMENTS", new String[]{"verifyotp",enteredOTP,phoneNumber});
+        intentC.putExtra("com.termux.RUN_COMMAND_WORKDIR", "/data/data/com.termux/files/home");
+        intentC.putExtra("com.termux.RUN_COMMAND_BACKGROUND", false);
+        intentC.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION", "0");
+        startService(intentC);
+
         Toast.makeText(this, "Sending OTP to " + phoneNumber + "___"+ enteredOTP+" (placeholder)", Toast.LENGTH_SHORT).show();
         return true;  // Placeholder return value
     }
     private void showLoginSuccessDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Login Successful!");
+        builder.setTitle("Logged In!");
         builder.setMessage("You are now logged in.");
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

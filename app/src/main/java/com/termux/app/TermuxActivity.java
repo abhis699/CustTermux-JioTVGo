@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
@@ -56,6 +57,7 @@ import com.termux.shared.termux.settings.properties.TermuxAppSharedProperties;
 import com.termux.shared.termux.theme.TermuxThemeUtils;
 import com.termux.shared.theme.NightMode;
 import com.termux.shared.view.ViewUtils;
+import com.termux.sky.StartDialogFragment;
 import com.termux.terminal.TerminalSession;
 import com.termux.terminal.TerminalSessionClient;
 import com.termux.view.TerminalView;
@@ -65,6 +67,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.Arrays;
@@ -94,14 +97,14 @@ public final class TermuxActivity extends AppCompatActivity implements ServiceCo
     TerminalView mTerminalView;
 
     /**
-     *  The {@link TerminalViewClient} interface implementation to allow for communication between
-     *  {@link TerminalView} and {@link TermuxActivity}.
+     * The {@link TerminalViewClient} interface implementation to allow for communication between
+     * {@link TerminalView} and {@link TermuxActivity}.
      */
     TermuxTerminalViewClient mTermuxTerminalViewClient;
 
     /**
-     *  The {@link TerminalSessionClient} interface implementation to allow for communication between
-     *  {@link TerminalSession} and {@link TermuxActivity}.
+     * The {@link TerminalSessionClient} interface implementation to allow for communication between
+     * {@link TerminalSession} and {@link TermuxActivity}.
      */
     TermuxTerminalSessionActivityClient mTermuxTerminalSessionActivityClient;
 
@@ -195,6 +198,8 @@ public final class TermuxActivity extends AppCompatActivity implements ServiceCo
 
     private static final String LOG_TAG = "TermuxActivity";
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Logger.logDebug(LOG_TAG, "onCreate");
@@ -215,6 +220,12 @@ public final class TermuxActivity extends AppCompatActivity implements ServiceCo
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_termux);
+
+        // Show the StartGameDialogFragment when the app opens
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        StartDialogFragment dialog = new StartDialogFragment();
+        dialog.show(fragmentManager,"START_DIALOG");
+
 
         // Load termux shared preferences
         // This will also fail if TermuxConstants.TERMUX_PACKAGE_NAME does not equal applicationId
@@ -278,6 +289,20 @@ public final class TermuxActivity extends AppCompatActivity implements ServiceCo
         // Send the {@link TermuxConstants#BROADCAST_TERMUX_OPENED} broadcast to notify apps that Termux
         // app has been opened.
         TermuxUtils.sendTermuxOpenedBroadcast(this);
+    }
+
+    public void work2() {
+        Log.d("E", "work: DONE 2 ");
+        Intent intentC2 = new Intent();
+        intentC2.setClassName("com.termux", "com.termux.app.RunCommandService");
+        intentC2.setAction("com.termux.RUN_COMMAND");
+        intentC2.putExtra("com.termux.RUN_COMMAND_PATH", "/data/data/com.termux/files/home/login.sh");
+        intentC2.putExtra("com.termux.RUN_COMMAND_ARGUMENTS", new String[]{"runiptv"});
+        intentC2.putExtra("com.termux.RUN_COMMAND_WORKDIR", "/data/data/com.termux/files/home");
+        intentC2.putExtra("com.termux.RUN_COMMAND_BACKGROUND", false);
+        intentC2.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION", "0");
+        startService(intentC2);
+
     }
 
     @Override

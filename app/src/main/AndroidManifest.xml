@@ -6,6 +6,7 @@
     android:sharedUserId="${TERMUX_PACKAGE_NAME}"
     android:sharedUserLabel="@string/shared_user_label">
 
+
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
@@ -224,6 +225,8 @@
             android:exported="true"
             android:grantUriPermissions="true"
             android:permission="${TERMUX_PACKAGE_NAME}.permission.RUN_COMMAND" />
+
+
 
 
         <receiver
