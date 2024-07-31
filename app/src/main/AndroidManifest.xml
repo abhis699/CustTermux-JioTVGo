@@ -4,10 +4,7 @@
     package="com.termux"
     android:installLocation="internalOnly"
     android:sharedUserId="${TERMUX_PACKAGE_NAME}"
-    android:sharedUserLabel="@string/shared_user_label"
-    tools:ignore="LeanbackUsesWifi">
-
-<!--    android:hardwareAccelerated="true"-->
+    android:sharedUserLabel="@string/shared_user_label">
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -40,27 +37,19 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
-    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"
-        tools:ignore="LeanbackUsesWifi" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" tools:node="remove" tools:ignore="QueryAllPackagesPermission" />
 
     <application
         android:name=".app.TermuxApplication"
         android:allowBackup="false"
-        android:banner="@mipmap/ic_banner2"
+        android:banner="@drawable/banner"
         android:extractNativeLibs="true"
-        android:icon="@mipmap/ic_launcher2"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher2_round"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/Theme.TermuxApp.DayNight.DarkActionBar"
-        tools:targetApi="m"
-        android:networkSecurityConfig="@xml/network_security_config">
+        tools:targetApi="m">
 
         <activity
             android:name=".app.TermuxActivity"
@@ -129,102 +118,6 @@
             android:taskAffinity="${TERMUX_PACKAGE_NAME}.filereceiver"
             tools:targetApi="n">
         </activity>
-
-        <activity
-            android:name=".LoginReceiverActivity"
-            android:theme="@style/AppTheme.Transparent"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.temux.ACTION_RECEIVE_LOGIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".SkyActionActivity"
-            android:theme="@style/AppTheme.Transparent"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.temux.SKY_ACTION" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".app.sky.SkyTVz"
-            android:theme="@style/AppTheme.Transparent"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.temux.SKYTVUI" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-
-        <activity
-            android:name=".SkySharedPrefActivity"
-            android:theme="@style/AppTheme.Transparent"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.temux.GetReceiver" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.temux.SaveReceiver" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".VideoPlayerActivity"
-            android:exported="true"/>
-<!--        android:screenOrientation="landscape"-->
-<!--        android:theme="@style/AppThemex"/>-->
-
-        <activity android:name=".WebPlayerActivity"
-            android:theme="@style/AppThemex"
-            android:exported="true">
-<!--            android:screenOrientation="landscape" >-->
-            <intent-filter>
-                <action android:name="com.temux.URLPLAYER" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>
-
-        <activity android:name=".AppSelectorActivity" />
-
-        <activity
-            android:name=".setup.SetupActivity"
-            android:exported="true">
-        </activity>
-
-        <activity
-            android:name=".LoginErrorActivity"
-            android:theme="@style/AppTheme.Transparent"
-            android:exported="true">
-        </activity>
-<!--        <activity android:name=".LoginActivity" />-->
-
-        <activity android:name=".LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <receiver android:name=".BootReceiver">
-            <intent-filter >
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
-
-        <activity android:name=".LoginActivity2" />
-
-
-
-
-
-
 
         <activity-alias
             android:name=".app.api.file.FileShareReceiverActivity"
