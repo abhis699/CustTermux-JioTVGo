@@ -24,7 +24,7 @@ esac
 #     if [[ -f "$HOME/.v4.4.cfg" ]]; then
 #         if ! grep -q ".autoscript_v4.4.sh" "$PREFIX/etc/bash.bashrc"; then
 #             echo "[INFO] Installing v4.4..."
-#             sed -i 's|URL3=".*"|URL3="https://raw.githubusercontent.com/siddharthsky/CustTermux/main/_BootStrap/etc/main/.autoscript_v4.4.sh"|' "$PREFIX/etc/bash.bashrc"
+#             sed -i 's|URL3=".*"|URL3="https://raw.githubusercontent.com/abhis699/CustTermux-JioTVGo/main/_BootStrap/etc/main/.autoscript_v4.4.sh"|' "$PREFIX/etc/bash.bashrc"
 #             echo "[SUCCESS] Updated to v4.4"
 #         fi
 #     fi
@@ -232,7 +232,7 @@ Setup_Prerequisites() {
     chmod 755 $HOME/.termux/termux.properties
     echo "allow-external-apps = true" >> $HOME/.termux/termux.properties
 
-    FILE_URL="https://raw.githubusercontent.com/siddharthsky/CustTermux/main/_BootStrap/etc/.set_password.exp"
+    FILE_URL="https://raw.githubusercontent.com/abhis699/CustTermux-JioTVGo/main/_BootStrap/etc/.set_password.exp"
     echo "Setting password file"
     sleep 3
     #FILE_URL="https://bit.ly/setpasswordexp" #^redirects here
@@ -247,13 +247,13 @@ Setup_Prerequisites() {
 
 Setup_Postrequisites() {
 
-    FILE_URL="https://raw.githubusercontent.com/siddharthsky/CustTermux/main/_BootStrap/etc/.set_tls.exp"
+    FILE_URL="https://raw.githubusercontent.com/abhis699/CustTermux-JioTVGo/main/_BootStrap/etc/.set_tls.exp"
     echo "Setting tls files"
     sleep 3
     curl -SL --progress-bar --retry 2 --retry-delay 2 -o "$HOME/.set_tls.exp" "$FILE_URL" || { echo "Failed to download binary"; exit 1; }
     chmod 755 "$HOME/.set_tls.exp"
 
-    FILE_URL="https://raw.githubusercontent.com/siddharthsky/CustTermux/main/_BootStrap/etc/config.json"
+    FILE_URL="https://raw.githubusercontent.com/abhis699/CustTermux-JioTVGo/main/_BootStrap/etc/config.json"
     echo "Setting config file"
     sleep 3
     curl -SL --progress-bar --retry 2 --retry-delay 2 -o "$HOME/.jiotv_go/bin/config.json" "$FILE_URL" || { echo "Failed to download binary"; exit 1; }
@@ -293,7 +293,7 @@ Default_Installation() {
         fi
     fi
 
-    BINARY_URL="https://github.com/rabilrbl/jiotv_go/releases/latest/download/jiotv_go-$OS-$ARCH"
+    BINARY_URL="https://github.com/atanuroy22/jiotv_go/releases/latest/download/jiotv_go-$OS-$ARCH"
     curl -SL --progress-bar --retry 2 --retry-delay 2 -o "$HOME/.jiotv_go/bin/jiotv_go" "$BINARY_URL" || { echo "Failed to download binary"; exit 1; }
 
     echo "Step 5: Granted executable permissions to the binary"
